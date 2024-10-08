@@ -16,13 +16,13 @@
                     <div class="dropdown-content" id="fileDropdown">
                         {% for file in files %}
                             <a href="/files/{{ file }}">{{ file }}</a>
+                            <button onclick="deleteFile('{{ file }}')">Delete</button>
                         {% endfor %}
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
-    
 
     <h1>Create a New HTML File</h1>
     <form id="fileForm">
@@ -54,6 +54,22 @@
                 } else {
                     alert(data.message);  // Display success message
                 }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function deleteFile(fileName) {
+            // Send a request to delete the file on the server
+            fetch(`/delete-file/${fileName}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                // Reload the page to update the drop-down menu
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Error:', error);
