@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Portfolio</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3em;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 10px;
+    }
+
+    nav ul li {
+      margin: 0 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+    }
+
+    section {
+      padding: 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .intro h2 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .intro p {
+      font-size: 1.2em;
+      color: #555;
+    }
+
+    /* Add styling for the profile image */
+    .intro img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin-top: 20px;
+    }
+
+    .skills, .projects, .contact {
+      margin-top: 40px;
+    }
+
+    .skills h3, .projects h3, .contact h3 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .skill-list, .project-list {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .skill, .project {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .project img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    footer p {
+      margin-bottom: 5px;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* Button Styling */
+    .contact-btn {
+      background: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1em;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .contact-btn:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h1>My Portfolio</h1>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Introduction Section -->
+  <section class="intro" id="about">
+    <h2>Hello, I'm [Your Name]</h2>
+    <p>Welcome to my portfolio! I'm a passionate [Your Profession] who enjoys creating innovative and efficient solutions.</p>
+    
+    <!-- Add your image here -->
+    <img src="https://sengkue.github.io/images/png/03.png" alt="Your Image">
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills" id="skills">
+    <h3>Skills</h3>
+    <div class="skill-list">
+      <div class="skill">
+        <h4>HTML</h4>
+        <p>Experienced in crafting well-structured and semantic web pages.</p>
+      </div>
+      <div class="skill">
+        <h4>CSS</h4>
+        <p>Skilled in designing responsive and visually appealing websites.</p>
+      </div>
+      <div class="skill">
+        <h4>JavaScript</h4>
+        <p>Proficient in adding interactivity and dynamic content to web apps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <h3>Projects</h3>
+    <div class="project-list">
+      <div class="project">
+        <img src="https://via.placeholder.com/300" alt="Project 1">
+        <h4>Project One</h4>
+        <p>This project focuses on building a responsive website using HTML, CSS, and JavaScript.</p>
+      </div>
+      <div class="project">
+        <img src="https://via.placeholder.com/300" alt="Project 2">
+        <h4>Project Two</h4>
+        <p>A web application that allows users to interact with dynamic content.</p>
+      </div>
+      <div class="project">
+        <img src="https://via.placeholder.com/300" alt="Project 3">
+        <h4>Project Three</h4>
+        <p>An e-commerce website built with a full-stack development approach.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <h3>Contact Me</h3>
+    <p>Feel free to reach out to me via email: <strong>youremail@example.com</strong></p>
+    <button class="contact-btn" onclick="displayThankYou()">Send Message</button>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 [Your Name]. All rights reserved.</p>
+    <p>Connect with me on <a href="#">LinkedIn</a> | <a href="#">GitHub</a></p>
+  </footer>
+
+  <script>
+    // JavaScript for button interaction
+    function displayThankYou() {
+      alert('Thank you for reaching out! I will get back to you soon.');
+    }
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
+
+
+    <button onclick="window.location.href='/'" style="position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        Back to Home
+    </button>
+    
