@@ -16,7 +16,7 @@
                     <div class="dropdown-content" id="fileDropdown">
                         {% for file in files %}
                             <a href="/files/{{ file }}">{{ file }}</a>
-                            <button onclick="deleteFile('{{ file }}')">Delete</button>
+                            <button onclick="confirmDelete('{{ file }}')">Delete</button>
                         {% endfor %}
                     </div>
                 </li>
@@ -33,12 +33,23 @@
         <button type="button" onclick="createFile()">Create File</button>
     </form>
 
+    <!-- Confirmation Dialog for Deletion -->
+    <div id="deleteConfirmation" style="display:none;">
+        <h2>Confirm File Deletion</h2>
+        <p>Please enter your email and password to confirm the deletion:</p>
+        <input type="email" id="email" placeholder="Enter email" required><br><br>
+        <input type="password" id="password" placeholder="Enter password" required><br><br>
+        <button onclick="deleteFile()">Confirm Delete</button>
+        <button onclick="cancelDelete()">Cancel</button>
+    </div>
+
     <script>
+        let fileToDelete = '';
+
         function createFile() {
             const fileName = document.getElementById("fileName").value;
             const content = document.getElementById("htmlContent").value;
 
-            // Send the content and file name to the Flask back-end via API request
             fetch('/create-file', {
                 method: 'POST',
                 headers: {
@@ -49,10 +60,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.redirect_url) {
-                    // Redirect to the newly created file
                     window.location.href = data.redirect_url;
                 } else {
-                    alert(data.message);  // Display success message
+                    alert(data.message);
                 }
             })
             .catch((error) => {
@@ -60,16 +70,32 @@
             });
         }
 
-        function deleteFile(fileName) {
-            // Send a request to delete the file on the server
-            fetch(`/delete-file/${fileName}`, {
-                method: 'DELETE'
+        function confirmDelete(fileName) {
+            fileToDelete = fileName;
+            document.getElementById("deleteConfirmation").style.display = 'block';
+        }
+
+        function cancelDelete() {
+            document.getElementById("deleteConfirmation").style.display = 'none';
+        }
+
+        function deleteFile() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            fetch(`/delete-file/${fileToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, password: password }),
             })
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
-                // Reload the page to update the drop-down menu
-                window.location.reload();
+                if (data.success) {
+                    window.location.reload();
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
