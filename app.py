@@ -51,6 +51,31 @@ def create_file():
     except Exception as e:
         return jsonify({"message": f"An error occurred: {e}"}), 500
 
+# Route to delete a file
+@app.route('/delete-file/<file_name>', methods=['DELETE'])
+def delete_file(file_name):
+    file_name_with_ext = f"{file_name}"
+
+    # Define the path to the file in the 'generated_files' directory
+    file_dir = os.path.join(os.getcwd(), 'generated_files')
+    file_path = os.path.join(file_dir, file_name_with_ext)
+
+    # Try to delete the file
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+            # Remove from the list of created files
+            if file_name_with_ext in created_files:
+                created_files.remove(file_name_with_ext)
+                # Save the updated list to the JSON file
+                with open(FILES_JSON, 'w') as f:
+                    json.dump(created_files, f)
+            return jsonify({"message": f"{file_name_with_ext} deleted successfully!"}), 200
+        except Exception as e:
+            return jsonify({"message": f"An error occurred while deleting the file: {e}"}), 500
+    else:
+        return jsonify({"message": f"{file_name_with_ext} not found!"}), 404
+
 # Serve the generated HTML files
 @app.route('/files/<path:filename>')
 def serve_file(filename):
