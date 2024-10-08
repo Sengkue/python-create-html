@@ -28,7 +28,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);  // Display success message
+                if (data.redirect_url) {
+                    // Redirect to the newly created file
+                    window.location.href = data.redirect_url;
+                } else {
+                    alert(data.message);  // Display success message
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
