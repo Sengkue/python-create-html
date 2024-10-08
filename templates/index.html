@@ -7,24 +7,43 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Create a new HTML file</h1>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">Generated Pages</a>
+                    <div class="dropdown-content" id="fileDropdown">
+                        {% for file in files %}
+                            <a href="/files/{{ file }}">{{ file }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Create a New HTML File</h1>
     <form id="fileForm">
-        <textarea id="htmlContent" rows="10" cols="50" placeholder="Enter your HTML content here..."></textarea>
+        <input type="text" id="fileName" placeholder="Enter file name (without .html)" required>
+        <br>
+        <textarea id="htmlContent" rows="10" cols="50" placeholder="Enter your HTML content here..." required></textarea>
         <br>
         <button type="button" onclick="createFile()">Create File</button>
     </form>
 
     <script>
         function createFile() {
+            const fileName = document.getElementById("fileName").value;
             const content = document.getElementById("htmlContent").value;
 
-            // Send the content to the Flask back-end via an API request
+            // Send the content and file name to the Flask back-end via API request
             fetch('/create-file', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content: content }),
+                body: JSON.stringify({ file_name: fileName, content: content }),
             })
             .then(response => response.json())
             .then(data => {
