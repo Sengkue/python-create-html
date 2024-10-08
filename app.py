@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_from_directory, redirect
 import os
 
 app = Flask(__name__)
@@ -15,16 +15,24 @@ def create_file():
     html_content = data['content']
 
     # Define the path to the new file
-    file_path = os.path.join(os.getcwd(), 'about.html')
+    file_name = 'about.html'
+    file_path = os.path.join(os.getcwd(), file_name)
 
     # Write the content to the file
     try:
         with open(file_path, 'w') as file:
             file.write(html_content)
-        return jsonify({"message": "File 'about.html' created successfully!"})
+        
+        # Send the URL for redirection
+        return jsonify({"message": "File created successfully!", "redirect_url": f"/files/{file_name}"})
     except Exception as e:
         return jsonify({"message": f"An error occurred: {e}"}), 500
 
+# Serve the newly created HTML file
+@app.route('/files/<path:filename>')
+def serve_file(filename):
+    # Serve the file from the root directory
+    return send_from_directory(os.getcwd(), filename)
+
 if __name__ == '__main__':
-    # Set debug=True for development purposes
     app.run(debug=True)
