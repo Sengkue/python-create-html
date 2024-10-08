@@ -7,6 +7,10 @@ app = Flask(__name__)
 # File to store the list of generated files
 FILES_JSON = 'files.json'
 
+# Predefined email and password
+ADMIN_EMAIL = "sengkuevang@gmail.com"
+ADMIN_PASSWORD = "79929556"
+
 # Load existing files from the JSON file (if it exists)
 if os.path.exists(FILES_JSON):
     with open(FILES_JSON, 'r') as f:
@@ -26,37 +30,28 @@ def create_file():
     file_name = data['file_name']
     html_content = data['content']
 
-    # Define the file name with .html extension
     file_name_with_ext = f"{file_name}.html"
-
-    # Define the path to the new file in the 'generated_files' directory
     file_dir = os.path.join(os.getcwd(), 'generated_files')
-    os.makedirs(file_dir, exist_ok=True)  # Create the directory if it doesn't exist
+    os.makedirs(file_dir, exist_ok=True)
     file_path = os.path.join(file_dir, file_name_with_ext)
 
-    # Add the 'Back to Home' button to the content
     back_to_home_button = """
     <button onclick="window.location.href='/'" style="position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
         Back to Home
     </button>
     """
 
-    # Combine the original HTML content with the Back to Home button
     full_html_content = f"{html_content}\n{back_to_home_button}"
 
-    # Write the content to the file
     try:
         with open(file_path, 'w') as file:
             file.write(full_html_content)
 
-        # Update the list of created files
         if file_name_with_ext not in created_files:
             created_files.append(file_name_with_ext)
-            # Save the list to a JSON file
             with open(FILES_JSON, 'w') as f:
                 json.dump(created_files, f)
 
-        # Send the URL for redirection
         return jsonify({"message": "File created successfully!", "redirect_url": f"/files/{file_name_with_ext}"})
     except Exception as e:
         return jsonify({"message": f"An error occurred: {e}"}), 500
@@ -64,27 +59,30 @@ def create_file():
 # Route to delete a file
 @app.route('/delete-file/<file_name>', methods=['DELETE'])
 def delete_file(file_name):
-    file_name_with_ext = f"{file_name}"
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
-    # Define the path to the file in the 'generated_files' directory
+    # Check if the provided email and password are correct
+    if email != ADMIN_EMAIL or password != ADMIN_PASSWORD:
+        return jsonify({"message": "Email or password incorrect.", "success": False}), 401
+
+    file_name_with_ext = f"{file_name}"
     file_dir = os.path.join(os.getcwd(), 'generated_files')
     file_path = os.path.join(file_dir, file_name_with_ext)
 
-    # Try to delete the file
     if os.path.exists(file_path):
         try:
             os.remove(file_path)
-            # Remove from the list of created files
             if file_name_with_ext in created_files:
                 created_files.remove(file_name_with_ext)
-                # Save the updated list to the JSON file
                 with open(FILES_JSON, 'w') as f:
                     json.dump(created_files, f)
-            return jsonify({"message": f"{file_name_with_ext} deleted successfully!"}), 200
+            return jsonify({"message": f"{file_name_with_ext} deleted successfully!", "success": True}), 200
         except Exception as e:
-            return jsonify({"message": f"An error occurred while deleting the file: {e}"}), 500
+            return jsonify({"message": f"An error occurred while deleting the file: {e}", "success": False}), 500
     else:
-        return jsonify({"message": f"{file_name_with_ext} not found!"}), 404
+        return jsonify({"message": f"{file_name_with_ext} not found!", "success": False}), 404
 
 # Serve the generated HTML files
 @app.route('/files/<path:filename>')
