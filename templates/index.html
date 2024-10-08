@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create HTML File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Create a new HTML file</h1>
+    <form id="fileForm">
+        <textarea id="htmlContent" rows="10" cols="50" placeholder="Enter your HTML content here..."></textarea>
+        <br>
+        <button type="button" onclick="createFile()">Create File</button>
+    </form>
+
+    <script>
+        function createFile() {
+            const content = document.getElementById("htmlContent").value;
+
+            // Send the content to the Flask back-end via an API request
+            fetch('/create-file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: content }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // Display success message
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
