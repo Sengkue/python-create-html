@@ -34,10 +34,20 @@ def create_file():
     os.makedirs(file_dir, exist_ok=True)  # Create the directory if it doesn't exist
     file_path = os.path.join(file_dir, file_name_with_ext)
 
+    # Add the 'Back to Home' button to the content
+    back_to_home_button = """
+    <button onclick="window.location.href='/'" style="position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        Back to Home
+    </button>
+    """
+
+    # Combine the original HTML content with the Back to Home button
+    full_html_content = f"{html_content}\n{back_to_home_button}"
+
     # Write the content to the file
     try:
         with open(file_path, 'w') as file:
-            file.write(html_content)
+            file.write(full_html_content)
 
         # Update the list of created files
         if file_name_with_ext not in created_files:
